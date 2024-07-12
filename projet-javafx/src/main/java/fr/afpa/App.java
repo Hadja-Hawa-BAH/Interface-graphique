@@ -31,13 +31,16 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Formulaire");
-         
-       
+        stage.setTitle("");
 
-        //Taille des boutons
+        // Taille des boutons
         Double buttonWidth = 100.0;
         Double buttonHeight = 100.0;
+
+        Label formulaire = new Label("Formulaire");
+        formulaire.setFont(new Font("Arial", 14));
+        formulaire.setAlignment(Pos.CENTER);
+      
 
         Label label1 = new Label("Entrée utilisateur");
         label1.setFont(new Font("Arial", 14));
@@ -64,6 +67,12 @@ public class App extends Application {
         button3.setTextAlignment(TextAlignment.JUSTIFY);
         button3.setPrefSize(buttonWidth, buttonHeight);
 
+        // Création du conteneur pour les boutons
+        VBox vBoxButtons = new VBox(button1, button2, button3);
+        vBoxButtons.setPrefSize(200, 50);
+        //vBoxButtons.setAlignment(Pos.CENTER_LEFT);
+        vBoxButtons.setSpacing(5);
+
         // Création d'un gridpane
         GridPane gridPane = new GridPane();
 
@@ -71,6 +80,10 @@ public class App extends Application {
         gridPane.add(field1, 1, 0);
         gridPane.add(label2, 0, 1);
         gridPane.add(field2, 1, 1);
+        gridPane.add(vBoxButtons, 2, 0);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setAlignment(Pos.BASELINE_RIGHT);
 
         // Methode1: Ajout des gestionnaires d'événements pour les boutons
         button3.setOnAction(new ButtonEventHandlerController());
@@ -83,32 +96,26 @@ public class App extends Application {
 
         // });
 
-        //
-
-        // Création du conteneur
-        VBox vBox = new VBox(button1, button2, button3);
-        vBox.setPrefSize(200, 50);
-        vBox.setAlignment(Pos.BASELINE_RIGHT);
-        vBox.setSpacing(10);
-  
-      
-        gridPane.add(vBox, 2, 0);
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setStyle("-fx-background-color: lightyellow; -fx-padding: 10");
-       
+        
+        VBox finalVBox = new VBox(formulaire, gridPane);
+        finalVBox.setAlignment(Pos.CENTER);
+        finalVBox.setSpacing(20);
+        finalVBox.setStyle("-fx-border-style: solid inside;" +
+        "-fx-border-width: 2;" +
+        "-fx-border-radius: 5;" +
+        "-fx-border-color: #34a4df;" +
+        "-fx-background-color : #ede9e3;" +
+        "-fx-effect: dropshadow(gaussian,  grey, 10, 0, 5, 5);");
+        finalVBox.setPadding(new Insets(20));
 
         // Création de la scène et ajout du conteneur
-        Scene scene = new Scene(gridPane, 500, 200);
+        Scene scene = new Scene(finalVBox, 500, 250);
 
-        //couleur arrière plan
+        // couleur arrière plan
         scene.setFill(Color.LIGHTYELLOW);
         scene.getRoot().setStyle("-fx-background-color: lightyellow");
 
         stage.setScene(scene);
-        stage.centerOnScreen();
-        // stage.setFill(Color.BLUE);
-        // stage.getRoot().setStyle("-fx-background-color: lightyellow");
       
         // Affichage de la fenêtre
         stage.show();
