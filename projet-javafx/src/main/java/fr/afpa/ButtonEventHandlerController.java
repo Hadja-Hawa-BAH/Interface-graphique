@@ -17,9 +17,9 @@ public class ButtonEventHandlerController implements EventHandler<ActionEvent> {
       //Fermeture de l'application
        Platform.exit();
        logger.info("L'application se ferme");
+
+          
         
     }
-
-    
 
 }
