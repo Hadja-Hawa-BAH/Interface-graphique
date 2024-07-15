@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -77,6 +78,8 @@ public class App extends Application {
         vBoxButtons.setAlignment(Pos.CENTER);
         vBoxButtons.setSpacing(5);
 
+        // vBoxButtons.setStyle("-fx-background-color: green;");
+
         // Création d'un gridpane
         GridPane gridPane = new GridPane();
 
@@ -87,14 +90,19 @@ public class App extends Application {
         gridPane.add(vBoxButtons, 2, 0, 1, 2);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        gridPane.setAlignment(Pos.BASELINE_LEFT);
+        gridPane.setAlignment(Pos.CENTER);
         gridPane.setGridLinesVisible(true);
+        
         RowConstraints row1 = new RowConstraints();
         row1.setPercentHeight(50);
         gridPane.getRowConstraints().add(row1);
         gridPane.getRowConstraints().add(row1);
 
-        //
+        // GridPane.setHgrow(label1, Priority.ALWAYS);
+        // GridPane.setHgrow(fieldInput, Priority.ALWAYS);
+        // GridPane.setHgrow(label2, Priority.ALWAYS);
+        // GridPane.setHgrow(fieldCopy, Priority.ALWAYS);
+
         AnchorPane anchorPane = new AnchorPane(gridPane);
 
         // anchor to the label
@@ -102,6 +110,8 @@ public class App extends Application {
         AnchorPane.setLeftAnchor(gridPane, 0.0);
         AnchorPane.setRightAnchor(gridPane, 0.0);
         AnchorPane.setBottomAnchor(gridPane, 0.0);
+
+        // anchorPane.setStyle("-fx-background-color: blue;");
 
         // Methode pour copier la saisie de l'utilisateur
         button1.setOnAction((ActionEvent event) -> fieldCopy.setText(fieldInput.getText()));
