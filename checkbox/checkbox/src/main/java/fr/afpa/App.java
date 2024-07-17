@@ -1,10 +1,6 @@
 package fr.afpa;
 
 import javafx.application.Application;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -12,9 +8,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -29,21 +22,26 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        stage.setTitle("CheckBox - Radiobutton - Slider");
+        stage.setTitle("");
+
+        // Création des labels couleurs et les sliders
+        Label rouge = new Label("Rouge");
+        Slider redSlider = new Slider(0, 255, 0);
+
+        Label vert = new Label("Vert");
+        Slider greenSlider = new Slider(0, 255, 0);
+
+        Label bleu = new Label("Bleu");
+        Slider blueSlider = new Slider(0, 255, 0);
 
         // Création du textfield pour la saisie
         TextField textField = new TextField();
         textField.setPromptText("Saisissez votre texte");
-        // System.out.println(textField);
 
-        Label label = new Label();
-        // System.out.println("Bonjour tout le monde");
+        Label labelResult = new Label();
+        
+        VBox vBox = new VBox(10);
 
-        Label Parameter = new Label("Paramètres label");
-
-        // Création du TitledPane
-        // TitledPane titledPane = new TitledPane(10, Parameter );
-        VBox vBox = new VBox(10, Parameter);
         String[] array = { "Couleur de fond", "Couleur des caractères", "Couleur de fond" };
 
         for (String option : array) {
@@ -52,121 +50,63 @@ public class App extends Application {
             vBox.getChildren().add(checkBox);
         }
 
-        VBox parametersContent = new VBox(10, label, vBox);
-        parametersContent.setAlignment(Pos.CENTER_RIGHT);
-        parametersContent.setStyle("-fx- border-color: black");
-        TitledPane titledPane = new TitledPane("array", parametersContent);
-
-        VBox finalVBox = new VBox(10, textField, titledPane);
+        TitledPane titledPane = new TitledPane("Paramètres label", vBox);
+        VBox finalVBox = new VBox(10, textField, labelResult, titledPane);
 
         // Création fond
-
-        Label font = new Label("Fond");
-
-        VBox vBoxFont = new VBox(10, font);
+        VBox vBoxFont = new VBox(10);
         String[] arrayFont = { "Rouge", "Vert", "Bleu" };
 
         for (String optionFont : arrayFont) {
             RadioButton radioButton = new RadioButton(optionFont);
             radioButton.setSelected(false);
             vBoxFont.getChildren().add(radioButton);
-
         }
 
-        VBox fontContent = new VBox(10, font, vBoxFont);
-
-        TitledPane titledPaneFont = new TitledPane("arrayFont", fontContent);
-
+        TitledPane titledPaneFont = new TitledPane("Font", vBoxFont);
         VBox finalFont = new VBox(10, titledPaneFont);
 
         // Création de la couleur des caractères
-        Label charColor = new Label("Couleur des caractères");
-        VBox vBoxCharColor = new VBox(10, charColor);
+        VBox sliderVBox = new VBox(rouge, redSlider, vert, greenSlider, bleu, blueSlider);
+        TitledPane titledPaneCharColor = new TitledPane("Couleur des caractères", sliderVBox);
 
-        
-        Label rouge = new Label("Rouge");
-        Slider redSlider = new Slider(0, 1, 0.5);
-        redSlider.valueProperty().addListener( new ChangeListener<Number>() {
-            public void changed(ObservableValue<?extends Number> observable, Number oldValue, Number newValue){
-                rouge.setText(rouge.getText());
-            }
-        });
-        
-        Slider greenSlider = new Slider(0, 1, 0.5);
-        
-        Slider blueSlider = new Slider(0, 1, 0.5);
+        //Mettre à jour le laberrresult lorsque le texte est modifié
+        textField.textProperty().addListener((observable, oldValue, newValue) -> { labelResult.setText(newValue);});
+        // Mettre la couleur sur le texte avec les sliders
+        redSlider.valueProperty().addListener((observable, oldValue, newValue) -> updateColor(labelResult, redSlider, greenSlider, blueSlider));
+        greenSlider.valueProperty().addListener((observable, oldValue, newValue) -> updateColor(labelResult, redSlider, greenSlider, blueSlider));
+        blueSlider.valueProperty().addListener((observable, oldValue, newValue) -> updateColor(labelResult, redSlider, greenSlider, blueSlider));
 
-        VBox sliderVBox = new VBox(vBoxCharColor, rouge, redSlider, greenSlider, blueSlider);
-
-        
-
-
-        // GridPane gridPane = new GridPane();
-
-        // gridPane.setConstraints(rouge, 1, 1);
-        // gridPane.add(rouge,1,1);
-        // gridPane.setConstraints(vert, 1, 2);
-        // gridPane.add(vert, 1, 2);
-
-        // gridPane.setConstraints(bleu, 1, 3);
-        // gridPane.add(bleu, 1,2);
-
-    
-
-
-
-        // String[] arrayCharColor = { "Rouge", "Vert", "Bleu" };
-
-        // for (String color : arrayCharColor) {
-        //     Label colorCheckBox = new Label(color);
-        //     vBoxCharColor.getChildren().add(colorCheckBox);
-        // }
-
-        // Slider redSlider = new Slider(0, 1, 0.5);
-        // vBoxCharColor.getChildren().add(redSlider);
-
-        // Slider greenSlider = new Slider(0, 1, 0.5);
-        // vBoxCharColor.getChildren().add(greenSlider);
-
-        // Slider blueSlider = new Slider(0, 1, 0.5);
-        // vBoxCharColor.getChildren().add(blueSlider);
-        // // redSlider.setShowTickMarks(true);
-        // // redSlider.setShowTickLabels(true);
-
-        // GridPane vBoxSlider = new GridPane();
-        // vBoxSlider.add(redSlider, 0, 0);
-        // vBoxSlider.add(greenSlider, 0, 1);
-        // vBoxSlider.add(blueSlider, 0, 2);
-
-        // VBox charColorContnent = new VBox(10, charColor, vBoxCharColor, vBoxSlider);
-        // TitledPane titledPaneCharColor = new TitledPane("arrayCharColor", charColorContnent);
-        // VBox finalCharColor = new VBox(10, titledPaneCharColor);
-
-         Label casse = new Label("Casse");
-         VBox vBoxCamelCase = new VBox(casse);
-
-        String[] arrayCamelCase = { "Majuscule", "Minuscule"};
+        // Création du camelcase
+        VBox vBoxCamelCase = new VBox(10);
+        String[] arrayCamelCase = {"Majuscule", "Minuscule"};
 
         for (String camelCase : arrayCamelCase) {
             RadioButton camelCaseBox = new RadioButton(camelCase);
             camelCaseBox.setSelected(false);
             vBoxCamelCase.getChildren().add(camelCaseBox);
         }
-        
 
-        VBox camelContent = new VBox(10, casse, vBoxCamelCase);
-
-        TitledPane titledPaneCamel = new TitledPane("arrayFont", camelContent);
-
+        TitledPane titledPaneCamel = new TitledPane("Casse", vBoxCamelCase);
         VBox finalCamel = new VBox(10, titledPaneCamel);
 
-
-        // Vbox finalefinalCharColor
-        VBox allVBox = new VBox(10, finalVBox, finalFont, sliderVBox, finalCamel);
-
-        Scene scene = new Scene(allVBox, 640, 600);
+        // Vbox finale //finalCharColor
+        VBox allVBox = new VBox(10, finalVBox, finalFont, titledPaneCharColor, finalCamel);
+        TitledPane mainTitledPane = new TitledPane("CheckBox - Radiobutton - Slider", allVBox);
+        
+        Scene scene = new Scene(mainTitledPane, 640, 600);
         stage.setScene(scene);
         stage.show();
+    }
+
+    // Methode pour mettre à jour la couleur des textes saisis
+    private void updateColor(Label label, Slider redSlider, Slider greenSlider, Slider blueSlider) {
+        int rouge = (int) redSlider.getValue();
+        int vert = (int) greenSlider.getValue();
+        int bleu = (int) blueSlider.getValue();
+
+        String hexaColor = String.format("#%02x%02x%02x", rouge, vert, bleu);
+        label.setStyle("-fx-text-fill:" + hexaColor);
     }
 
 }
