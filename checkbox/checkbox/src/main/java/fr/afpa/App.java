@@ -1,6 +1,8 @@
 package fr.afpa;
 
 import javafx.application.Application;
+import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -10,8 +12,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -43,6 +49,7 @@ public class App extends Application {
         textField.setPrefSize(300, 10);
 
         Label labelResult = new Label();
+        // labelResult.setStyle("-fx-text-fill: #000000;");
         VBox vBoxText = new VBox(10, textField, labelResult);
         
         VBox vBox = new VBox(10);
@@ -121,8 +128,23 @@ public class App extends Application {
 
     //Methode pour mettre un fond de couleur au texte
     private void updateFont(Label label, String color) {
-    
-        label.setStyle("-fx-background-color: " + color);
+        // Version avec modification en Java de la couleur de fond
+        // déclaration d'un objet de la classe BackgroundFill permettant de changer la couleur
+        // d'un label
+        BackgroundFill bgFill = null;
+        if (color.equals("red")) {
+            bgFill = new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY);
+        } else if (color.equals("green")) {
+            bgFill = new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY);
+        } else {
+            bgFill = new BackgroundFill(Color.BLUE, CornerRadii.EMPTY, Insets.EMPTY);
+        }
+        
+        label.setBackground(new Background(bgFill));
+
+        // ------- Version avec modification du style CSS du Label
+        // label.setStyle("-fx-background-color: " + color + ";");
+        // ------- Fin code autre version
     } 
        
     // Methode pour mettre à jour la couleur avec les sliders des textes saisis
@@ -132,8 +154,41 @@ public class App extends Application {
         int bleu = (int) blueSlider.getValue();
 
         String hexaColor = String.format("#%02x%02x%02x", rouge, vert, bleu);
-        label.setStyle("-fx-text-fill:" + hexaColor);
+
+        // Version avec utilisation de Java pour le changement de la couleur de fond du Label
+        // dans ce cas il suffit de changer le style CSS du label
+        label.setStyle("-fx-text-fill: " + hexaColor + ";");
+        
+        
+        // ------- Version en modifiant le CSS
+        // Cas plus complexe car il faut faire attention de ne changer QUE la valeur de la couleur du texte
+
+        // String style = label.getStyle();
+        // if (!style.contains("-fx-text-fill")) {
+        //     // pas de couleur de texte ajoutée au préalable
+        //     // on change le background
+        //     label.setStyle(style +  "-fx-text-fill: " + hexaColor + ";");
+        // } else {
+        //     String newStyle = "";
+
+        //     String[] styleParts = style.split(";");
+        //     for (String part : styleParts) {
+    
+        //         if (part.contains("-fx-text-fill")) {
+        //             // une couleur de texte avait déjà été mise
+        //             // on va la mettre à jour !
+        //             newStyle = newStyle + "-fx-text-fill: " + hexaColor + ";";
+        //         } else {
+        //             // ce n'est pas un style de couleur de texte (probablement un style de backgroud)
+        //             // nous gardons le style
+        //             newStyle = newStyle + part + ";";
+        //         }
+        //     }
+        //     label.setStyle(newStyle);
+        // }
+        // ------- Fin du code permettant d'ajuster le CSS
     }
+
 
     //Methode pour mettre en majuscule ou minuscule
     private void updateTextCase(TextField textField, Label labelResult, boolean toUpperCase) {
