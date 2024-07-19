@@ -44,25 +44,21 @@ public class App extends Application {
         VBox elementVBox = new VBox(30, addElement, removeElement);
         elementVBox.setAlignment(Pos.BASELINE_CENTER);
 
-        ObservableList<Country> countries = FXCollections.observableArrayList();
+        ObservableList<Country> countriesList = FXCollections.observableArrayList();
         ArrayList<Country> countryList = Country.getCountriesList();
 
         for (Country country : countryList) {
-            countries.add(country);
+            countriesList.add(country);
         }
 
         // Permet d'afficher les pays
-        ComboBox<Country> finalComboBox = new ComboBox<Country>(countries);
+        ComboBox<Country> finalComboBox = new ComboBox<Country>(countriesList);
 
         // Affiche les boutons "Haut" et "Bas"
         UpDownListView<Country> upDownListView = new UpDownListView<Country>();
 
         Label label = new Label("Pays disponibles:");
         VBox comboBoxCountry = new VBox(10, label, finalComboBox);
-
-        // Création de listview
-        
-        //ListView<Country> countryListView = new ListView<>();
 
         VBox upDownExit = new VBox(10, upDownListView, exitButton);
         HBox finalHBox = new HBox(10);
@@ -74,43 +70,65 @@ public class App extends Application {
         // comboBoxList.add(new Country("Argentine", "ARG"));
         // ComboBox<Country> comboBox = new ComboBox<Country>(comboBoxList);
 
+        addOneElement.setDisable(true);
+        addAllElement.setDisable(true);
+
         removeOneElement.setDisable(true);
         removeAllElement.setDisable(true);
 
-        finalComboBox.addListener(new ListChangeListener<Country>() {
-         @Override
-         public void onChanged(Change<? extends Country> country) {
-         System.out.println("---");
-         }
+       
+        countriesList.addListener(new ListChangeListener<Country>() {
 
+            @Override
+            public void onChanged(Change<? extends Country> country) {
+                if (upDownListView.getListView().getItems().isEmpty()) {
+                    removeOneElement.setDisable(true);
+                    removeAllElement.setDisable(true);
+
+                } else {
+                    removeOneElement.setDisable(false);
+                    removeAllElement.setDisable(false);
+                }
+
+                if (countriesList.isEmpty() || finalComboBox.getSelectionModel().getSelectedItem() == null) {
+                    addOneElement.setDisable(false);
+                    addAllElement.setDisable(false);
+                }
+
+            }
         });
+
+        ObservableList<Country> upDownObservableList = FXCollections.observableArrayList();
 
         // Gestionnaire d'événements
         // Methode pour ajouter un élément
         addOneElement.setOnAction(event -> {
-            upDownListView.getObjectsList().add(finalComboBox.getValue());
+            upDownObservableList.add(finalComboBox.getValue());
+            upDownListView.setObjectsList(upDownObservableList);
             finalComboBox.getItems().remove(finalComboBox.getValue());
 
         });
 
         addAllElement.setOnAction(event -> {
-           upDownListView.getObjectsList().addAll(finalComboBox.getValue());
+            upDownObservableList.addAll(finalComboBox.getItems());
+            upDownListView.setObjectsList(upDownObservableList);
             finalComboBox.getItems().clear();
         });
 
+        Country country = upDownListView.getListView().getSelectionModel().getSelectedItem();
         removeOneElement.setOnAction(event -> {
-            Country country = upDownListView.getSelectionModel().getSelectedItem();
+
             finalComboBox.getItems().add(country);
             upDownListView.getObjectsList().remove(country);
 
         });
 
         removeAllElement.setOnAction(event -> {
+
             finalComboBox.getItems().addAll(upDownListView.getObjectsList());
             upDownListView.getObjectsList().clear();
         });
 
-       
         // Méthode pour fermer l'application avec le bouton "Quitter"
         exitButton.setOnAction((ActionEvent event) -> {
             Platform.exit();
