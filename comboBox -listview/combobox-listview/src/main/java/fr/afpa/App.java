@@ -76,6 +76,16 @@ public class App extends Application {
         removeOneElement.setDisable(true);
         removeAllElement.setDisable(true);
 
+        finalComboBox.setOnAction(event -> {
+            if (finalComboBox.getSelectionModel().getSelectedItem() != null) {
+                addOneElement.setDisable(false);
+                addAllElement.setDisable(false);
+            } else {
+                addOneElement.setDisable(true);
+                addAllElement.setDisable(true);
+        
+            }
+        });
        
         countriesList.addListener(new ListChangeListener<Country>() {
 
@@ -90,7 +100,7 @@ public class App extends Application {
                     removeAllElement.setDisable(false);
                 }
 
-                if (countriesList.isEmpty() || finalComboBox.getSelectionModel().getSelectedItem() == null) {
+                if (countriesList.isEmpty()) {
                     addOneElement.setDisable(false);
                     addAllElement.setDisable(false);
                 }
