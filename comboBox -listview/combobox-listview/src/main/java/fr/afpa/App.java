@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -76,7 +75,15 @@ public class App extends Application {
         removeOneElement.setDisable(true);
         removeAllElement.setDisable(true);
 
-       
+        finalComboBox.setOnAction(event -> {
+            if (finalComboBox.getSelectionModel().getSelectedItem() != null || !finalComboBox.getItems().isEmpty()) {
+                addOneElement.setDisable(false);
+                addAllElement.setDisable(false);
+            }
+        });
+
+    
+
         countriesList.addListener(new ListChangeListener<Country>() {
 
             @Override
@@ -90,7 +97,7 @@ public class App extends Application {
                     removeAllElement.setDisable(false);
                 }
 
-                if (countriesList.isEmpty() || finalComboBox.getSelectionModel().getSelectedItem() == null) {
+                if (countriesList.isEmpty()) {
                     addOneElement.setDisable(false);
                     addAllElement.setDisable(false);
                 }
@@ -98,14 +105,19 @@ public class App extends Application {
             }
         });
 
+
+      
+
         ObservableList<Country> upDownObservableList = FXCollections.observableArrayList();
 
         // Gestionnaire d'événements
         // Methode pour ajouter un élément
         addOneElement.setOnAction(event -> {
-            upDownObservableList.add(finalComboBox.getValue());
-            upDownListView.setObjectsList(upDownObservableList);
-            finalComboBox.getItems().remove(finalComboBox.getValue());
+            if (finalComboBox.getSelectionModel().getSelectedItem() != null || !finalComboBox.getItems().isEmpty()) {
+                upDownObservableList.add(finalComboBox.getValue());
+                upDownListView.setObjectsList(upDownObservableList);
+                finalComboBox.getItems().remove(finalComboBox.getValue());
+            }
 
         });
 

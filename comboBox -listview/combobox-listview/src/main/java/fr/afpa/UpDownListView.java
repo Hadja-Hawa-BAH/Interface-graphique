@@ -1,24 +1,20 @@
 package fr.afpa;
 
-import java.io.FileInputStream;
-
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class UpDownListView<T> extends VBox {
+public class UpDownListView<Country> extends VBox {
     private Button upButton;
     private Button downButton;
     private ListView<Country> listView;
 
     private ObservableList<Country> objectsList;
-    private ObservableList<Country> selectedModel;
-    private Country selectedItem;
+    // private ObservableList<Country> selectedModel;
+    // private Country selectedItem;
 
     public UpDownListView() {
 
@@ -40,7 +36,7 @@ public class UpDownListView<T> extends VBox {
         this.downButton = new Button("Bas");
         this.listView = new ListView<Country>();
 
-        //Gestionnaire d'événements
+        // Gestionnaire d'événements
         upButton.setOnAction(event -> moveUp());
         downButton.setOnAction(event -> moveDown());
 
@@ -52,7 +48,6 @@ public class UpDownListView<T> extends VBox {
         buttonBox.setAlignment(Pos.CENTER_RIGHT);
         this.getChildren().add(buttonBox);
         this.getChildren().add(this.listView);
-
     }
 
     // Fonction pour associer une "ObservableList" à ce composant
@@ -66,33 +61,50 @@ public class UpDownListView<T> extends VBox {
         return objectsList;
     }
 
-    
     public ListView<Country> getListView() {
         return listView;
     }
-    
 
-
+    // Methode pour le bouton "moveUp"
     public void moveUp() {
-        int selectedIndex = listView.getSelectionModel().getSelectedIndex();
-        if (selectedIndex > 0) {
-            ObservableList<Country> items = listView.getItems();
-            Country item = items.remove(selectedIndex);
-            items.add(selectedIndex - 1, item);
-            listView.getSelectionModel().select(selectedIndex - 1);
-
+        ObservableList<Country> list = listView.getItems();
+        Country country = listView.getSelectionModel().getSelectedItem();
+        int indexCountry = list.indexOf(country);
+        if (indexCountry != 0){
+            list.remove(indexCountry);
+            indexCountry--;
+            list.add(indexCountry,country);
+            listView.getSelectionModel().select(indexCountry);
         }
+        // int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+        // if (selectedIndex != 0) {
+        //     ObservableList<Country> items = listView.getItems();
+        //     Country item = items.remove(selectedIndex);
+        //     items.add(selectedIndex - 1, item);
+        //     listView.getSelectionModel().select(selectedIndex - 1);
+        // }
     }
 
+    // Methode pour le bouton "moveDown"
     public void moveDown() {
-        int selectedIndex = listView.getSelectionModel().getSelectedIndex();
-        if (selectedIndex < listView.getItems().size() - 1) {
-            ObservableList<Country> items = listView.getItems();
-            Country item = items.remove(selectedIndex);
-            items.add(selectedIndex + 1, item);
-            listView.getSelectionModel().select(selectedIndex + 1);
-
+        ObservableList<Country> list = listView.getItems();
+        Country country = listView.getSelectionModel().getSelectedItem();
+        int indexCountry = list.indexOf(country);
+        if (indexCountry < list.size() - 1){
+            list.remove(indexCountry);
+            indexCountry++;
+            list.add(indexCountry,country);
+            listView.getSelectionModel().select(indexCountry);
         }
+
+        // int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+        // if (selectedIndex < listView.getItems().size() - 1) {
+        //     ObservableList<Country> items = listView.getItems();
+        //     Country item = items.remove(selectedIndex);
+        //     items.add(selectedIndex + 1, item);
+        //     listView.getSelectionModel().select(selectedIndex + 1);
+
+        // }
     }
 
 }
