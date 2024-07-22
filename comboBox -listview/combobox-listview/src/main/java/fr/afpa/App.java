@@ -76,6 +76,7 @@ public class App extends Application {
         removeAllElement.setDisable(true);
 
         finalComboBox.setOnAction(event -> {
+<<<<<<< HEAD
             if (finalComboBox.getSelectionModel().getSelectedItem() != null || !finalComboBox.getItems().isEmpty()) {
                 addOneElement.setDisable(false);
                 addAllElement.setDisable(false);
@@ -84,6 +85,18 @@ public class App extends Application {
 
     
 
+=======
+            if (finalComboBox.getSelectionModel().getSelectedItem() != null) {
+                addOneElement.setDisable(false);
+                addAllElement.setDisable(false);
+            } else {
+                addOneElement.setDisable(true);
+                addAllElement.setDisable(true);
+        
+            }
+        });
+       
+>>>>>>> 924629909acd0993ce64168d23c3bb41093ec554
         countriesList.addListener(new ListChangeListener<Country>() {
 
             @Override
